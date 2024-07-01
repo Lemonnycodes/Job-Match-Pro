@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Recommendation System</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1c1e21;
+            color: #e4e6eb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #242526;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #e4e6eb;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            color: #e4e6eb;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #3a3b3c;
+        }
+
+        .sidebar .active {
+            background-color: #fff8b2; /* Light yellow */
+            color: #000;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #18191a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            display: none;
+            width: 100%;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        form {
+            background-color: #242526;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 500px;
+            color: #e4e6eb;
+        }
+
+        form h1 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"], input[type="file"], select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #3a3b3c;
+            border-radius: 4px;
+            background-color: #3a3b3c;
+            color: #e4e6eb;
+        }
+
+        input[type="submit"] {
+            background-color: #2d88ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #1877f2;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3a3b3c;
+            color: #e4e6eb;
+        }
+
+        td {
+            background-color: #4a4b4d;
+        }
+
+        #results table {
+            width: 100%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #242526;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #results th,
+        #results td {
+            padding: 10px;
+            border: 1px solid #333;
+        }
+    </style>
+    <script>
+        function showContent(id) {
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const activeContent = document.getElementById(id);
+            activeContent.classList.add('active');
+
+            const links = document.querySelectorAll('.sidebar a');
+            links.forEach(link => link.classList.remove('active'));
+
+            const activeLink = document.querySelector(`[href="#${id}"]`);
+            activeLink.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobTitlesTab = document.querySelector('[href="#job_titles"]');
+            if (jobTitlesTab) {
+                jobTitlesTab.addEventListener('click', function() {
+                    showContent('job_titles');
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Job Recommendations</h2>
+        <a href="#summary" class="active" onclick="showContent('summary')">Summary</a>
+        <a href="#strength" onclick="showContent('strength')">Strength</a>
+        <a href="#weakness" onclick="showContent('weakness')">Weakness</a>
+        <a href="#job_titles" onclick="showContent('job_titles')">Job Titles</a>
+        <a href="#linkedin_jobs" onclick="showContent('linkedin_jobs')">LinkedIn Jobs</a>
+    </div>
+    <div class="main-content">
+        <div id="summary" class="content active">
+            <h1>Enter the details</h1>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <label for="resume_file">Upload Resume:</label>
+                <input type="file" id="resume_file" name="resume_file" accept=".pdf,.docx"><br><br>
+                
+                <label for="job_title">Job Title:</label>
+                <input type="text" id="job_title" name="job_title"><br><br>
+                
+                <label for="preferred_location">Preferred Location:</label>
+                <input type="text" id="preferred_location" name="preferred_location" placeholder="Anywhere"><br><br>
+                
+                <label for="preferred_mode">Preferred Mode of Work:</label>
+                <select id="preferred_mode" name="preferred_mode">
+                    <option value="No Preference">No Preference</option>
+                    <option value="Remote">Remote</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select><br><br>
+                
+                <label for="preferred_experience_range">Preferred Experience Range:</label>
+                <input type="text" id="preferred_experience_range" name="preferred_experience_range" placeholder="e.g., 0-5"><br><br>
+                
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <div id="strength" class="content">
+            <h1>Strength</h1>
+            <p>This section will display the user's strengths based on their resume and job preferences.</p>
+            <!-- Additional content for Strength tab can go here -->
+        </div>
+        <div id="weakness" class="content">
+            <h1>Weakness</h1>
+            <p>This section will display the user's weaknesses based on their resume and job preferences.</p>
+            <!-- Additional content for Weakness tab can go here -->
+        </div>
+        <div id="job_titles" class="content">
+            <h1>Job Recommendations</h1>
+            <div id="results">
+                <table>
+                    <tr>
+                        <th>Job ID</th>
+                        <th>Job Title</th>
+                        <th>Location</th>
+                        <th>Location Match</th>
+                        <th>Mode Match</th>
+                        <th>Experience Match</th>
+                        <th>Similarity Score</th>
+                    </tr>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result['Job ID'] }}</td>
+                        <td>{{ result['Job Title'] }}</td>
+                        <td>{{ result['Location'] }}</td>
+                        <td>{{ result['Location Match'] }}</td>
+                        <td>{{ result['Mode Match'] }}</td>
+                        <td>{{ result['Experience Match'] }}</td>
+                        <td>{{ result['Similarity Score'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div id="linkedin_jobs" class="content">
+            <h1>LinkedIn Jobs</h1>
+            <form action="/" method="post">
+                <label for="linkedin_job_title">Job Title:</label>
+                <input type="text" id="linkedin_job_title" name="job_title"><br><br>
+                <label for="linkedin_job_location">Job Location:</label>
+                <input type="text" id="linkedin_job_location" name="job_location" value="India"><br><br>
+                <label for="linkedin_job_count">Job Count:</label>
+                <input type="number" id="linkedin_job_count" name="job_count" min="1" value="1"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
