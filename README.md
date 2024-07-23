@@ -1,4 +1,4 @@
-# Job Recommendation System
+# Job Match Pro
 
 The Job Recommendation System is an advanced application designed to match job seekers with the most suitable job opportunities based on their skills, experience, and preferences. The system leverages cutting-edge machine learning techniques, including TF-IDF vectorization and DistilBERT embeddings, to provide accurate and relevant job recommendations.
 
